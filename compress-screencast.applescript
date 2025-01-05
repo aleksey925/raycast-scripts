@@ -9,9 +9,11 @@
 # @raycast.icon 🗜️
 
 # Documentation:
-# @raycast.description Compresses a screencast video file using the H.265 video codec and AAC audio codec.
+# @raycast.description Compresses a screencast video file.
 # @raycast.author alex925
 # @raycast.authorURL https://raycast.com/alex925
+
+# https://unix.stackexchange.com/questions/28803/how-can-i-reduce-a-videos-size-with-ffmpeg
 
 tell application "Finder"
     set selectedFiles to selection
@@ -35,14 +37,10 @@ tell application "Finder"
     set logFileName to (text 1 thru -((count fileExtension) + 2) of outputFileName) & ".log"
     set logFilePath to fileDirectory & logFileName
 
-    # -c:a - audio codec
-    # -b:a - audio bitrate (quality)
     set ffmpegCommand to "ffmpeg " & ¬
         "-i " & quoted form of inputFilePath & " " & ¬
-        "-c:v libx265 " & ¬
-        "-threads 4 " & ¬
-        "-c:a aac " & ¬
-        "-b:a 128k " & ¬
+        "-vcodec libx264 " & ¬
+        "-crf 28 " & ¬
         "-progress pipe:1 " & ¬
         quoted form of outputFilePath & " > " & quoted form of logFilePath & " 2>&1"
 
