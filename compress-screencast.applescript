@@ -37,10 +37,13 @@ tell application "Finder"
     set logFileName to (text 1 thru -((count fileExtension) + 2) of outputFileName) & ".log"
     set logFilePath to fileDirectory & logFileName
 
+    # 0-51: 0 is lossless, 51 is the worst quality; 23-28 is a reasonable range
+    set videoQualityRate to 28
+
     set ffmpegCommand to "ffmpeg " & ¬
         "-i " & quoted form of inputFilePath & " " & ¬
         "-vcodec libx264 " & ¬
-        "-crf 28 " & ¬
+        "-crf " & videoQualityRate & " " & ¬
         "-progress pipe:1 " & ¬
         quoted form of outputFilePath & " > " & quoted form of logFilePath & " 2>&1"
 
